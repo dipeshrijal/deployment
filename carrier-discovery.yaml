@@ -1,0 +1,49 @@
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: carrier-discovery
+  namespace: default
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: miranda
+  strategy:
+    rollingUpdate:
+      maxSurge: 25%
+      maxUnavailable: 25%
+    type: RollingUpdate
+  template:
+    metadata:
+      labels:
+        app: miranda
+    spec:
+      containers:
+      - image: 410986195230.dkr.ecr.us-west-2.amazonaws.com/carrier-discovery:00000001
+        imagePullPolicy: Always
+        name: carrier-discovery
+        ports:
+        - protocol: TCP
+          containerPort: 40404
+          containerPort: 42321
+        env:
+        - name: ENVIRONMENT
+          value: "STAGE"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: carrier-discovery
+spec:
+  selector:
+    app: miranda
+  ports:
+    - port: 40404
+      name: port-1
+      protocol: TCP
+      targetPort: 40404
+    - port: 42321
+      name: port-2
+      protocol: TCP
+      targetPort: 42321

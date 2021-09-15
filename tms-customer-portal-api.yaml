@@ -1,0 +1,43 @@
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: tms-customer-portal-api
+  namespace: default
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: miranda
+  strategy:
+    rollingUpdate:
+      maxSurge: 25%
+      maxUnavailable: 25%
+    type: RollingUpdate
+  template:
+    metadata:
+      labels:
+        app: miranda
+    spec:
+      containers:
+      - image: 410986195230.dkr.ecr.us-west-2.amazonaws.com/tms-customer-portal-api:00000001
+        imagePullPolicy: Always
+        name: tms-customer-portal-api
+        ports:
+        - protocol: TCP
+          containerPort: 40404
+        env:
+        - name: ENVIRONMENT
+          value: "STAGE"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: tms-customer-portal-api
+spec:
+  selector:
+    app: miranda
+  ports:
+   -  protocol: TCP
+      port: 40404
+      targetPort: 40404

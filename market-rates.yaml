@@ -1,0 +1,54 @@
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: market-rates
+  namespace: default
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: miranda
+  strategy:
+    rollingUpdate:
+      maxSurge: 25%
+      maxUnavailable: 25%
+    type: RollingUpdate
+  template:
+    metadata:
+      labels:
+        app: miranda
+    spec:
+      containers:
+      - image: 410986195230.dkr.ecr.us-west-2.amazonaws.com/market-rates:00000001
+        imagePullPolicy: Always
+        name: market-rates
+        ports:
+        - protocol: TCP
+          containerPort: 40404
+          containerPort: 42314
+          containerPort: 42320
+        env:
+        - name: ENVIRONMENT
+          value: "STAGE"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: market-rates
+spec:
+  selector:
+    app: miranda
+  ports:
+    - port: 40404
+      name: port-1
+      protocol: TCP
+      targetPort: 40404
+    - port: 42314
+      name: port-2
+      protocol: TCP
+      targetPort: 42314
+    - port: 42326
+      name: port-3
+      protocol: TCP
+      targetPort: 42326

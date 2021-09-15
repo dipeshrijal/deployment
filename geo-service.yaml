@@ -1,0 +1,43 @@
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: geo-service
+  namespace: default
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: miranda
+  strategy:
+    rollingUpdate:
+      maxSurge: 25%
+      maxUnavailable: 25%
+    type: RollingUpdate
+  template:
+    metadata:
+      labels:
+        app: miranda
+    spec:
+      containers:
+      - image: 410986195230.dkr.ecr.us-west-2.amazonaws.com/geo-service:00000001
+        imagePullPolicy: Always
+        name: geo-service
+        ports:
+        - protocol: TCP
+          containerPort: 42310
+        env:
+        - name: ENVIRONMENT
+          value: "STAGE"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: geo-service
+spec:
+  selector:
+    app: miranda
+  ports:
+   -  protocol: TCP
+      port: 42310
+      targetPort: 42310

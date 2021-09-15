@@ -1,0 +1,54 @@
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: reverse-proxy
+  namespace: default
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: miranda
+  strategy:
+    rollingUpdate:
+      maxSurge: 25%
+      maxUnavailable: 25%
+    type: RollingUpdate
+  template:
+    metadata:
+      labels:
+        app: miranda
+    spec:
+      containers:
+      - image: 410986195230.dkr.ecr.us-west-2.amazonaws.com/rproxy-sidekick:00000001
+        imagePullPolicy: Always
+        name: reverse-proxy
+        ports:
+        - protocol: TCP
+          containerPort: 40404
+          containerPort: 42312
+          containerPort: 42320
+        env:
+        - name: ENVIRONMENT
+          value: "STAGE"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: reverse-proxy
+spec:
+  selector:
+    app: miranda
+  ports:
+    - port: 40404
+      name: port-1
+      protocol: TCP
+      targetPort: 40404
+    - port: 42312
+      name: port-2
+      protocol: TCP
+      targetPort: 42312
+    - port: 42320
+      name: port-3
+      protocol: TCP
+      targetPort: 42320

@@ -1,0 +1,45 @@
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: tms-report-service
+  namespace: default
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: miranda
+  strategy:
+    rollingUpdate:
+      maxSurge: 25%
+      maxUnavailable: 25%
+    type: RollingUpdate
+  template:
+    metadata:
+      labels:
+        app: miranda
+    spec:
+      containers:
+      - image: 410986195230.dkr.ecr.us-west-2.amazonaws.com/tms-report-service:00000001
+        imagePullPolicy: Always
+        name: tms-report-service
+        ports:
+        - protocol: TCP
+          containerPort: 40404
+        env:
+        - name: ENVIRONMENT
+          value: "STAGE"
+        - name: DATABASE_URL
+          value: "postgres://miranda_dev:CStack0909!@miranda-dev.ck1nnfagmdeg.us-west-2.rds.amazonaws.com:5432/postgres"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: tms-report-service
+spec:
+  selector:
+    app: miranda
+  ports:
+   -  protocol: TCP
+      port: 40404
+      targetPort: 40404

@@ -1,0 +1,57 @@
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: tms-user-service
+  namespace: default
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: miranda
+  strategy:
+    rollingUpdate:
+      maxSurge: 25%
+      maxUnavailable: 25%
+    type: RollingUpdate
+  template:
+    metadata:
+      labels:
+        app: miranda
+    spec:
+      containers:
+      - image: 410986195230.dkr.ecr.us-west-2.amazonaws.com/tms-user-service:00000001
+        imagePullPolicy: Always
+        name: tms-user-service
+        ports:
+        - protocol: TCP
+          containerPort: 40404
+        env:
+        - name: ENVIRONMENT
+          value: "STAGE"
+        - name: AUTH0_DOMAIN
+          value: "dev-htmrs9d3.us.auth0.com"
+        - name: AUTH0_CLIENT_ID
+          value: "VdLNEn5Cmqtypg3qKSI6Ah9N09IKJKhm"
+        - name: AUTH0_CLIENT_SECRET
+          value: "VDgBsHwhcYirhQUneswjyPVXzS3r4qC1_j68NLNreEgq5fpyEUQgBTrJnopTyAme"
+        - name: MAILGUN_API_KEY
+          value: "key-646fde1ea1daa7134c920d3a69519c49"
+        - name: MAILGUN_DOMAIN
+          value: "mirandatms.com"
+        - name: EMAIL_BASE_URL
+          value: "http://localhost:42306"
+        - name: EMAIL_SUBJECT_PREFIX
+          value: "DEV"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: tms-user-service
+spec:
+  selector:
+    app: miranda
+  ports:
+   -  protocol: TCP
+      port: 40404
+      targetPort: 40404

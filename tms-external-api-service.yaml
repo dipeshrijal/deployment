@@ -1,0 +1,49 @@
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: tms-external-api-service
+  namespace: default
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: miranda
+  strategy:
+    rollingUpdate:
+      maxSurge: 25%
+      maxUnavailable: 25%
+    type: RollingUpdate
+  template:
+    metadata:
+      labels:
+        app: miranda
+    spec:
+      containers:
+      - image: 410986195230.dkr.ecr.us-west-2.amazonaws.com/tms-external-api-service:00000001
+        imagePullPolicy: Always
+        name: tms-external-api-service
+        ports:
+        - protocol: TCP
+          containerPort: 40404
+          containerPort: 42330
+        env:
+        - name: ENVIRONMENT
+          value: "STAGE"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: tms-external-api-service
+spec:
+  selector:
+    app: miranda
+  ports:
+  - port: 40404
+    name: port-1
+    protocol: TCP
+    targetPort: 40404
+  - port: 42330
+    name: port-2
+    protocol: TCP
+    targetPort: 42330

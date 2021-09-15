@@ -1,0 +1,95 @@
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: api-endpoint
+  namespace: default
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: miranda
+  strategy:
+    rollingUpdate:
+      maxSurge: 25%
+      maxUnavailable: 25%
+    type: RollingUpdate
+  template:
+    metadata:
+      labels:
+        app: miranda
+    spec:
+      containers:
+      - image: 410986195230.dkr.ecr.us-west-2.amazonaws.com/api-endpoint:00000001
+        imagePullPolicy: Always
+        name: api-endpoint
+        ports:
+        - protocol: TCP
+          containerPort: 40404
+          containerPort: 42308
+          containerPort: 42309
+          containerPort: 42311
+          containerPort: 42313
+        env:
+        - name: ENVIRONMENT
+          value: "STAGE"
+        - name: ORDER_GRID_CACHE_PUSHER_QUEUE_LIMIT
+          value: "20"
+        - name: MONGO_URL
+          value: "mongodb+srv://{auth}@miranda-dev.6c2la.mongodb.net/myFirstDatabase?retryWrites=true&w=majority/{name}"
+        - name: MONGO_AUTH
+          value: "test:test123"
+        - name: RABBITMQ_URL
+          value: "amqp://guest:guest@rabbitmq:5672/"
+        - name: PUSHER_HOST
+          value: "pusher"
+        - name: PUSHER_PORT
+          value: "8080"
+        - name: PUSHER_APP_ID
+          value: "1256955"
+        - name: PUSHER_KEY
+          value: "65bfa69835e9067df167"
+        - name: PUSHER_SECRET
+          value: "adc84dd181bea1f960ee"
+        - name: PUSHER_PORT_CLIENT
+          value: "50008"
+        - name: ELASTICSEARCH_URL
+          value: "http://elasticsearch:9200"
+        - name: ELASTICSEARCH_OMNISEARCH_URL
+          value: "http://elasticsearch-api:9200"
+        - name: ELASTICSEARCH_ACTIVITYFEED_URL
+          value: "http://elasticsearch-api:9200"
+        - name: REDIS_URL
+          value: "redis-api"
+        - name: REDIS_PORT
+          value: "6379"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: api-endpoint
+spec:
+  selector:
+    app: miranda
+  ports:
+    - protocol: TCP
+      port: 40404
+      name: port-1
+      targetPort: 40404
+    - protocol: TCP
+      port: 42308
+      name: port-2
+      targetPort: 42308
+    - protocol: TCP
+      port: 42309
+      name: port-3
+      targetPort: 42309
+    - protocol: TCP
+      port: 42311
+      name: port-4
+      targetPort: 42311
+    - protocol: TCP
+      port: 42313
+      name: port-5
+      targetPort: 42313
+    
