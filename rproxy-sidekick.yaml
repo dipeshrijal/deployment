@@ -2,13 +2,13 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: reverse-proxy
+  name: rproxy-sidekick
   namespace: default
 spec:
   replicas: 3
   selector:
     matchLabels:
-      app: miranda
+      app: rproxy-sidekick
   strategy:
     rollingUpdate:
       maxSurge: 25%
@@ -17,7 +17,7 @@ spec:
   template:
     metadata:
       labels:
-        app: miranda
+        app: rproxy-sidekick
     spec:
       containers:
       - image: 410986195230.dkr.ecr.us-west-2.amazonaws.com/rproxy-sidekick:00000001
@@ -35,10 +35,10 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: reverse-proxy
+  name: rproxy-sidekick
 spec:
   selector:
-    app: miranda
+    app: rproxy-sidekick
   ports:
     - port: 40404
       name: port-1

@@ -8,7 +8,7 @@ spec:
   replicas: 3
   selector:
     matchLabels:
-      app: miranda
+      app: tms-company-service
   strategy:
     rollingUpdate:
       maxSurge: 25%
@@ -17,7 +17,7 @@ spec:
   template:
     metadata:
       labels:
-        app: miranda
+        app: tms-company-service
     spec:
       containers:
       - image: 410986195230.dkr.ecr.us-west-2.amazonaws.com/tms-company-service:00000001
@@ -42,7 +42,7 @@ metadata:
   name: tms-company-service
 spec:
   selector:
-    app: miranda
+    app: tms-company-service
   ports:
    -  protocol: TCP
       port: 40404

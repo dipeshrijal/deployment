@@ -8,7 +8,7 @@ spec:
   replicas: 3
   selector:
     matchLabels:
-      app: miranda
+      app: market-rates
   strategy:
     rollingUpdate:
       maxSurge: 25%
@@ -17,7 +17,7 @@ spec:
   template:
     metadata:
       labels:
-        app: miranda
+        app: market-rates
     spec:
       containers:
       - image: 410986195230.dkr.ecr.us-west-2.amazonaws.com/market-rates:00000001
@@ -38,7 +38,7 @@ metadata:
   name: market-rates
 spec:
   selector:
-    app: miranda
+    app: market-rates
   ports:
     - port: 40404
       name: port-1

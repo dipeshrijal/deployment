@@ -8,7 +8,7 @@ spec:
   replicas: 3
   selector:
     matchLabels:
-      app: miranda
+      app: tms-external-api-service
   strategy:
     rollingUpdate:
       maxSurge: 25%
@@ -17,7 +17,7 @@ spec:
   template:
     metadata:
       labels:
-        app: miranda
+        app: tms-external-api-service
     spec:
       containers:
       - image: 410986195230.dkr.ecr.us-west-2.amazonaws.com/tms-external-api-service:00000001
@@ -37,7 +37,7 @@ metadata:
   name: tms-external-api-service
 spec:
   selector:
-    app: miranda
+    app: tms-external-api-service
   ports:
   - port: 40404
     name: port-1

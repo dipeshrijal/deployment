@@ -8,7 +8,7 @@ spec:
   replicas: 3
   selector:
     matchLabels:
-      app: miranda
+      app: customer-service
   strategy:
     rollingUpdate:
       maxSurge: 25%
@@ -17,7 +17,7 @@ spec:
   template:
     metadata:
       labels:
-        app: miranda
+        app: customer-service
     spec:
       containers:
       - image: 410986195230.dkr.ecr.us-west-2.amazonaws.com/customer-service:00000001
@@ -36,7 +36,7 @@ metadata:
   name: customer-service
 spec:
   selector:
-    app: miranda
+    app: customer-service
   ports:
    -  protocol: TCP
       port: 40404

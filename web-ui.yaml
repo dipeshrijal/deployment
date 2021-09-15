@@ -8,7 +8,7 @@ spec:
   replicas: 3
   selector:
     matchLabels:
-      app: miranda
+      app: web-ui
   strategy:
     rollingUpdate:
       maxSurge: 25%
@@ -17,7 +17,7 @@ spec:
   template:
     metadata:
       labels:
-        app: miranda
+        app: web-ui
     spec:
       containers:
       - image: 410986195230.dkr.ecr.us-west-2.amazonaws.com/web-ui:00000001
@@ -36,7 +36,7 @@ metadata:
   name: web-ui
 spec:
   selector:
-    app: miranda
+    app: web-ui
   ports:
    -  protocol: TCP
       port: 42301

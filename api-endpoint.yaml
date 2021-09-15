@@ -8,7 +8,7 @@ spec:
   replicas: 3
   selector:
     matchLabels:
-      app: miranda
+      app: api-endpoint
   strategy:
     rollingUpdate:
       maxSurge: 25%
@@ -17,7 +17,7 @@ spec:
   template:
     metadata:
       labels:
-        app: miranda
+        app: api-endpoint
     spec:
       containers:
       - image: 410986195230.dkr.ecr.us-west-2.amazonaws.com/api-endpoint:00000001
@@ -82,7 +82,7 @@ metadata:
   name: api-endpoint
 spec:
   selector:
-    app: miranda
+    app: api-endpoint
   ports:
     - protocol: TCP
       port: 40404

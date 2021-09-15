@@ -8,7 +8,7 @@ spec:
   replicas: 3
   selector:
     matchLabels:
-      app: miranda
+      app: carrier-discovery
   strategy:
     rollingUpdate:
       maxSurge: 25%
@@ -17,7 +17,7 @@ spec:
   template:
     metadata:
       labels:
-        app: miranda
+        app: carrier-discovery
     spec:
       containers:
       - image: 410986195230.dkr.ecr.us-west-2.amazonaws.com/carrier-discovery:00000001
@@ -37,7 +37,7 @@ metadata:
   name: carrier-discovery
 spec:
   selector:
-    app: miranda
+    app: carrier-discovery
   ports:
     - port: 40404
       name: port-1
