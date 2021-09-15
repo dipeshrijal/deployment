@@ -36,11 +36,13 @@ spec:
         - name: MONGO_AUTH
           value: "test:test123"
         - name: RABBITMQ_URL
-          value: "amqp://guest:guest@rabbitmq:5672/"
+          value: "amqps://wwhxgeff:QoJ06A16BhBBo1Tw7BICuLIzAeMy6-Z9@snake.rmq2.cloudamqp.com/wwhxgeff"
         - name: REDIS_URL
-          value: "redis-api"          
+          value: "redis-16445.c1.us-west-2-2.ec2.cloud.redislabs.com"
         - name: REDIS_PORT
-          value: "6379"
+          value: "16445"
+        - name: REDIS_PASSWORD
+          value: "uweBGRjRxBRO5DqHezqhkMaAVgIVxY2O" 
 ---
 apiVersion: v1
 kind: Service
